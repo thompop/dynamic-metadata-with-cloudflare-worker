@@ -43,10 +43,31 @@ export default {
       const metaDataEndpointWithId = metaDataEndpoint.replace(placeholderPattern, id);
     
       // Fetch metadata from the API endpoint
-      const metaDataResponse = await fetch(metaDataEndpointWithId);
-      const metadata = await metaDataResponse.json();
-      return metadata;
+      try {
+        const metaDataResponse = await fetch(metaDataEndpointWithId, {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + env.SUPABASE_KEY, // Set this in the Cloudflare Worker settings
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name: 'Functions' })
+        });
+
+        // Check if the response is valid JSON
+        if (!metaDataResponse.ok) {
+          console.error(`Error fetching metadata: ${metaDataResponse.status} ${metaDataResponse.statusText}`);
+          const errorText = await metaDataResponse.text();
+          console.error(`Response body: ${errorText}`);
+          throw new Error(`Failed to fetch metadata: ${metaDataResponse.status}`);
+        }
+
+        return (await metaDataResponse.json());
+      } catch (error) {
+        console.error('Error in requestMetadata:', error);
+        throw error;
+      }
     }
+    // END of async function requestMetadata(url, metaDataEndpoint)
 
     // Handle dynamic page requests
     const patternConfig = getPatternConfig(url.pathname);
