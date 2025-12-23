@@ -1,14 +1,19 @@
 export const config = {
-  domainSource: "https://f69a71f6-9fd8-443b-a040-78beb5d404d4.weweb-preview.io", // Your WeWeb app preview link
-  patterns: [
-      {
-          pattern: "/event/[^/]+",
-          metaDataEndpoint: "https://xeo6-2sgh-ehgj.n7.xano.io/api:8wD10mRd/event/{id}/meta"
-      },
-      {
-          pattern: "/team/profile/[^/]+",
-          metaDataEndpoint: "https://xeo6-2sgh-ehgj.n7.xano.io/api:LjwxezTv/team/profile/{profile_id}/meta"
-      }
-      // Add more patterns and their metadata endpoints as needed
-  ]
+    domainSource: "https://www.readysetwod.com/", // Your WeWeb app preview link
+    patterns: [
+        {
+            // the initial "^" is important to match only the page url, not its styles and scripts that share a similar url
+            pattern: "^/box/[^/]+",
+            metaDataEndpoint: "https://kpakcjrxyfbihhincthp.supabase.co/functions/v1/getMetaBox/{id}"
+        },
+        {
+            pattern: "^/athlete/[^/]+",
+            metaDataEndpoint: "https://kpakcjrxyfbihhincthp.supabase.co/functions/v1/getMetaAthlete/{id}"
+        },
+			  {
+            pattern: "^/competition/[^/]+",
+            metaDataEndpoint: "https://kpakcjrxyfbihhincthp.supabase.co/functions/v1/getMetaCompetition/{id}"
+        }
+        // Add more patterns and their metadata endpoints as needed
+    ]
 };
